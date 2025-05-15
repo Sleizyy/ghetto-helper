@@ -25,8 +25,8 @@ local update_state = false
 local update_url = 'https://raw.githubusercontent.com/Sleizyy/ghetto-helper/refs/heads/main/update.ini'
 local update_path = getWorkingDirectory() .. '/update.ini'
 
-local scriptVersion = 1
-script_version('1.00')
+local scriptVersion = 2
+script_version('1.01')
 local script_url = ''
 local script_path = thisScript().path
 
@@ -43,6 +43,10 @@ function main()
 
     cmd('gh', function()
         render_window[0] = not render_window[0]
+    end)
+
+    cmd('testver', function ()
+        msg(tag..'Новая версия! Йоу!!')
     end)
 
         downloadUrlToFile(update_url, update_path, function(id, status)
