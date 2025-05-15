@@ -27,7 +27,7 @@ local update_path = getWorkingDirectory() .. '/update.ini'
 
 local scriptVersion = 2
 script_version('1.01')
-local script_url = ''
+local script_url = 'https://github.com/Sleizyy/ghetto-helper/raw/refs/heads/main/ghetto_helper.lua'
 local script_path = thisScript().path
 
 local tag = '[{0008ff}Ghetto Assistant{ffffff}]: '
@@ -43,10 +43,6 @@ function main()
 
     cmd('gh', function()
         render_window[0] = not render_window[0]
-    end)
-
-    cmd('testver', function ()
-        msg(tag..'Новая версия! Йоу!!')
     end)
 
         downloadUrlToFile(update_url, update_path, function(id, status)
