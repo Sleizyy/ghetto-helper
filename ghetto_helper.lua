@@ -19,15 +19,15 @@ local function u8d(u8) return encoding.UTF8:decode(u8) end
 local sizeX, sizeY = getScreenResolution()
 local render_window = new.bool(false)
 local window_page = 1
-local currentPage = (fa["INFO"] .. u8d ' Информация')
+local currentPage = (fa["INFO"] .. u8' Информация')
 
 local auto_update = new.bool(false)
 local update_state = false
 local update_url = 'https://raw.githubusercontent.com/Sleizyy/ghetto-helper/refs/heads/main/update.ini'
 local update_path = getWorkingDirectory() .. '/update.ini'
 
-local scriptVersion = 4
-script_version('1.04')
+local scriptVersion = 5
+script_version('1.05')
 local script_url = 'https://github.com/Sleizyy/ghetto-helper/raw/refs/heads/main/ghetto_helper.lua'
 local script_path = thisScript().path
 
@@ -46,11 +46,15 @@ function main()
         render_window[0] = not render_window[0]
     end)
 
+    cmd('test', function ()
+        msg(tag .. 'U8 Норм ворк', -1)
+    end)
+
         downloadUrlToFile(update_url, update_path, function(id, status)
             if status == dlstatus.STATUS_ENDDOWNLOADDATA then
                 updateIni = inicfg.load(nil, update_path)
                 if tonumber(updateIni.info.version) > scriptVersion then
-                    msg(tag .. u8'Доступно обновление! Версия: ' .. updateIni.info.version_text,
+                    msg(tag ..'Доступно обновление! Версия: ' .. updateIni.info.version_text,
                         -1)
                     update_state = true
                 end
@@ -62,7 +66,7 @@ function main()
         if update_state then
             downloadUrlToFile(script_url, script_path, function(id, status)
                 if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-                    msg(tag..u8'Скрипт успешно обновлен­!', 1)
+                    msg(tag..'Скрипт успешно обновлен­!', -1)
                     thisScript():reload()
                 end
             end)
@@ -109,7 +113,7 @@ local newFrame = imgui.OnFrame(function() return render_window[0] end,
         end
         if addons.AnimButton(fa["INFO"] .. u8 ' Для 9-10 Рангов##3', imgui.ImVec2(120, 30)) then
             window_page = 3
-            currentPage = (fa.user .. u8 ' Для 9-10 Рангов')
+            currentPage = (fa["INFO"] .. u8 ' Для 9-10 Рангов')
         end
         if addons.AnimButton(fa["LIST"] .. u8 ' Функции##4', imgui.ImVec2(120, 30)) then
             window_page = 4
@@ -140,7 +144,7 @@ local newFrame = imgui.OnFrame(function() return render_window[0] end,
             imgui.PushFont(log_font)
 
             imgui.SetCursorPos(imgui.ImVec2(10, 0))
-            imgui.Text(u8 '??????: 1.00')
+            imgui.Text(u8 'Версия: 1.00')
 
             imgui.PopFont()
             imgui.EndChild() -- Update Log
@@ -153,6 +157,11 @@ local newFrame = imgui.OnFrame(function() return render_window[0] end,
             imgui.LinkText('https://vk.com/ses1404', fa["FILE_CODE"] .. u8 ' Файл на ГитХабе')
         elseif window_page == 2 then
             imgui.Text('1')
+
+        elseif window_page == 3 then
+            imgui.Text('2')
+        elseif window_page == 4 then
+            imgui.Text('3')
         end
 
         imgui.EndChild()
