@@ -13,20 +13,21 @@ local requests = require('lib.requests')
 local encoding = require("encoding")
 encoding.default = 'CP1251'
 u8 = encoding.UTF8
+local function u8d(u8) return encoding.UTF8:decode(u8) end
 
 --- VARIABLES ---
 local sizeX, sizeY = getScreenResolution()
 local render_window = new.bool(false)
 local window_page = 1
-local currentPage = (fa["INFO"] .. u8 ' Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї')
+local currentPage = (fa["INFO"] .. u8d ' Информация')
 
 local auto_update = new.bool(false)
 local update_state = false
 local update_url = 'https://raw.githubusercontent.com/Sleizyy/ghetto-helper/refs/heads/main/update.ini'
 local update_path = getWorkingDirectory() .. '/update.ini'
 
-local scriptVersion = 3
-script_version('1.02')
+local scriptVersion = 4
+script_version('1.04')
 local script_url = 'https://github.com/Sleizyy/ghetto-helper/raw/refs/heads/main/ghetto_helper.lua'
 local script_path = thisScript().path
 
@@ -49,7 +50,7 @@ function main()
             if status == dlstatus.STATUS_ENDDOWNLOADDATA then
                 updateIni = inicfg.load(nil, update_path)
                 if tonumber(updateIni.info.version) > scriptVersion then
-                    msg(tag .. 'Г„Г®Г±ГІГЇГіГ­Г® Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ! Г‚ГҐГ°Г±ГЁГї: ' .. updateIni.info.version_text,
+                    msg(tag .. u8'Доступно обновление! Версия: ' .. updateIni.info.version_text,
                         -1)
                     update_state = true
                 end
@@ -61,7 +62,7 @@ function main()
         if update_state then
             downloadUrlToFile(script_url, script_path, function(id, status)
                 if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-                    msg(tag..'Г‘ГЄГ°ГЁГЇГІ ГіГ±ГЇГҐГёГ­Г® Г®ГЎГ­Г®ГўГ«ВёГ­В­!', 1)
+                    msg(tag..u8'Скрипт успешно обновлен­!', 1)
                     thisScript():reload()
                 end
             end)
@@ -98,21 +99,21 @@ local newFrame = imgui.OnFrame(function() return render_window[0] end,
         imgui.SetCursorPos(imgui.ImVec2(7, 125))
         imgui.BeginChild('##buttons', imgui.ImVec2(135, 150), true)
 
-        if addons.AnimButton(fa["INFO"] .. u8 ' Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї##1', imgui.ImVec2(120, 30)) then
+        if addons.AnimButton(fa["INFO"] .. u8 ' Информация##1', imgui.ImVec2(120, 30)) then
             window_page = 1
-            currentPage = (fa["INFO"] .. u8 ' Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї')
+            currentPage = (fa["INFO"] .. u8 ' Информация')
         end
-        if addons.AnimButton(fa["GEARS"] .. u8 ' ГЌГ Г±ГІГ°Г®Г©ГЄГЁ##2', imgui.ImVec2(120, 30)) then
+        if addons.AnimButton(fa["GEARS"] .. u8 ' Настройки##2', imgui.ImVec2(120, 30)) then
             window_page = 2
-            currentPage = (fa["GEARS"] .. u8 ' ГЌГ Г±ГІГ°Г®Г©ГЄГЁ')
+            currentPage = (fa["GEARS"] .. u8 ' Настройки')
         end
-        if addons.AnimButton(fa["INFO"] .. u8 ' Г„Г«Гї 9-10 Г°Г Г­ГЈГ®Гў##3', imgui.ImVec2(120, 30)) then
+        if addons.AnimButton(fa["INFO"] .. u8 ' Для 9-10 Рангов##3', imgui.ImVec2(120, 30)) then
             window_page = 3
-            currentPage = (fa.user .. u8 ' Г„Г«Гї 9-10 Г°Г Г­ГЈГ®Гў')
+            currentPage = (fa.user .. u8 ' Для 9-10 Рангов')
         end
-        if addons.AnimButton(fa["LIST"] .. u8 ' Г”ГіГ­ГЄГ¶ГЁГЁ##4', imgui.ImVec2(120, 30)) then
+        if addons.AnimButton(fa["LIST"] .. u8 ' Функции##4', imgui.ImVec2(120, 30)) then
             window_page = 4
-            currentPage = (fa["LIST"] .. u8 ' Г”ГіГ­ГЄГ¶ГЁГЁ')
+            currentPage = (fa["LIST"] .. u8 ' Функции')
         end
         imgui.EndChild() -- Buttons
 
@@ -139,7 +140,7 @@ local newFrame = imgui.OnFrame(function() return render_window[0] end,
             imgui.PushFont(log_font)
 
             imgui.SetCursorPos(imgui.ImVec2(10, 0))
-            imgui.Text(u8 'Г‚ГҐГ°Г±ГЁГї: 1.00')
+            imgui.Text(u8 '??????: 1.00')
 
             imgui.PopFont()
             imgui.EndChild() -- Update Log
@@ -147,9 +148,9 @@ local newFrame = imgui.OnFrame(function() return render_window[0] end,
 
             imgui.NewLine()
 
-            imgui.LinkText('https://vk.com/ses1404', fa["FILE"] .. u8 ' Г’ГҐГ¬Г  Г± ГЎГ«Г Г±ГІГµГ ГЄГ ')
-            imgui.LinkText('https://vk.com/ses1404', fa["MESSAGE"] .. u8 ' ГЊГ®Г© ГўГЄ')
-            imgui.LinkText('https://vk.com/ses1404', fa["FILE_CODE"] .. u8 ' Г’ГҐГ¬Г  Г± ГЈГЁГІГµГ ГЎГ ')
+            imgui.LinkText('https://vk.com/ses1404', fa["FILE"] .. u8 ' Тема на бластхаке')
+            imgui.LinkText('https://vk.com/ses1404', fa["MESSAGE"] .. u8 ' Мой вк')
+            imgui.LinkText('https://vk.com/ses1404', fa["FILE_CODE"] .. u8 ' Файл на ГитХабе')
         elseif window_page == 2 then
             imgui.Text('1')
         end
@@ -176,7 +177,7 @@ function imgui.ApplyCustomStyle()
     local style                      = imgui.GetStyle()
     local colors                     = style.Colors
 
-    -- ГѓвЂ™Г‚ВёГѓВ¬ГѓВ­ГѓВ ГѓВї ГѓВІГѓВҐГѓВ¬ГѓВ 
+    -- ?’???¬?­? ?? ?????¬? 
     colors[imgui.Col.WindowBg]       = imgui.ImVec4(0.13, 0.14, 0.17, 1.00)
     colors[imgui.Col.TitleBg]        = imgui.ImVec4(0.10, 0.11, 0.13, 1.00)
     colors[imgui.Col.TitleBgActive]  = imgui.ImVec4(0.16, 0.17, 0.20, 1.00)
