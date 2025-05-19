@@ -25,8 +25,8 @@ local update_state = false
 local update_url = 'https://raw.githubusercontent.com/Sleizyy/ghetto-helper/refs/heads/main/update.ini'
 local update_path = getWorkingDirectory() .. '/update.ini'
 
-local scriptVersion = 6
-script_version('1.06')
+local scriptVersion = 7
+script_version('1.07')
 local script_url = 'https://github.com/Sleizyy/ghetto-helper/raw/refs/heads/main/ghetto_helper.lua'
 local script_path = thisScript().path
 
@@ -90,6 +90,10 @@ function main()
 
     cmd('save', function ()
         inicfg.save(cfg, direct_cfg)
+    end)
+
+    cmd('ya', function ()
+        msg(tag .. 'Я пидор ебаный', -1)
     end)
 
     -- clearAnim()
